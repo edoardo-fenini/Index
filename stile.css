@@ -1,0 +1,27 @@
+.titolo {
+    text-align: center;
+    color: black;
+
+}
+
+.lavoro {
+    height: 75px;
+    width: 30%;
+/*    float: left;*/
+
+
+
+    border: solid;
+    border-radius: 20px;
+    background-color: lightgreen;
+
+
+
+}
+
+.testo {
+    
+
+    margin-left: 50%;
+    margin-top: 25px;
+}
