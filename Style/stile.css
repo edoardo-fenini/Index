@@ -7,7 +7,7 @@
 .lavoro {
     height: 75px;
     width: 30%;
-/*    float: left;*/
+    float: left;
 
 
 
@@ -19,9 +19,7 @@
 
 }
 
-body {
-    text-align: center;
-}
+
 
 
 
