@@ -1,30 +1,178 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="Style/stile.css">
-    </head>
-    <body>
-        <h1 class="titolo">Index personale di Edoardo Fenini</h1>
+<html lang="it">
+<head>
+    <title>Lettura File con JavaScript</title>
 
+    <!-- INIZIO CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FF7F50, #FFB084); /* Gradiente corallo */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
 
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            padding: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
 
+        /* Div container centrato */
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
 
+        /* Style per l'input */
+        input[type="file"] {
+            background-color: #FF7F50; /* Corallo */
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
+        input[type="file"]:hover {
+            background-color: #FFB084; /* Corallo più chiaro al hover */
+        }
 
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
-        <a href="www.google.com"><div class="lavoro"><p class="testo">/</p></div></a>
+        /* Stile per la tabella */
+        table {
+            width: 60%;
+            margin: 50px auto;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
+        /* Stile per le righe della tabella */
+        tr:nth-child(even) {
+            background-color: #F8E3D8; /* Colore pastello chiaro per le righe pari */
+        }
 
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
 
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 1.1rem;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
 
+        th {
+            background-color: #FF7F50; /* Corallo */
+            color: #fff;
+            font-weight: bold;
+        }
 
+        td:hover {
+            background-color: #FFB084; /* Colore corallo al hover sulle celle */
+        }
 
-    </body>
+        /* Ombre e hover sui tasti */
+        .button {
+            background-color: #FF7F50; /* Corallo */
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #FFB084; /* Corallo più chiaro al hover */
+        }
+
+        /* Animazione per l'entrata delle righe della tabella */
+        tr {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        tr:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        tr:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        tr:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Animazione di apparizione */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Padding globale */
+        #output {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Carica un file di testo</h1>
+    <input type="file" onchange="showfile()" id="input">
+
+    <table id="tabella" class="table"></table>
+
+    <div id="output"></div>
+
+    <script>
+        const tabella = document.getElementById("tabella");
+        let fileA = document.getElementById("input");
+
+        function showfile() {
+            let file = fileA.files[0];
+            console.log(file.name);
+
+            let reader = new FileReader();
+
+            reader.readAsText(file);
+
+            reader.onload = function() {
+                const prova = reader.result;
+                const prova1 = prova.split(",");
+
+                for (let i = 0; i < ((prova1.length)/2)-1; i++) {
+                    const riga = document.createElement("tr");
+
+                    const contenutoData = document.createTextNode(prova1[i*2]);
+                    const contenutoNum = document.createTextNode(prova1[(i*2)+1]);
+
+                    const td1 = document.createElement("td");
+                    const td2 = document.createElement("td");
+
+                    td1.appendChild(contenutoData);
+                    td2.appendChild(contenutoNum);
+
+                    riga.appendChild(td1);
+                    riga.appendChild(td2);
+
+                    tabella.appendChild(riga);
+                }
+            }
+        }
+    </script>
+</body>
 </html>
