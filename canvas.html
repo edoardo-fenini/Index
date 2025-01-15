@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-color: coral;
+                text-align: center;
+            }
+            .canvas {
+                margin-top: 10%;
+                background-color: black;
+                border-radius: 24px;
+                border: white;
+                border-width: 2px;
+                border: solid;
+                transition-duration: 0.5s;
+            }
+            .canvas:hover {
+                background-color: bisque;
+            }
+
+
+
+            .titolo {
+                font-family: 'Times New Roman', Times, serif;
+                transition-duration: 0.5s;
+            }
+
+            .titolo:hover {
+                font-size: xx-large;
+            }
+
+            .istruzioni {
+                font-family: 'Times New Roman', Times, serif;
+                transition-duration: 0.5s;
+            }
+            .istruzioni:hover {
+                font-size: x-large;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <h1 class="titolo">Stella disegnata con canvas</h1>
+        <h3 class="istruzioni">Spostare il mouse sul quadrato nero per rivelare la Stella</h3>
+
+
+        <canvas id="myCanvas" width="500" height="500" class="canvas"></canvas>
+
+
+        
+
+
+        <script>
+            const canvas = document.getElementById("myCanvas");
+            const ctx = canvas.getContext("2d");
+
+
+            ctx.moveTo(250, 100); // Punta superiore
+            ctx.lineTo(290, 190); // Angolo destro alto
+            ctx.stroke();
+
+            ctx.moveTo(290, 190);
+            ctx.lineTo(380, 190); // Angolo destro basso
+            ctx.stroke();
+
+            ctx.moveTo(380, 190);
+            ctx.lineTo(310, 250); // Punta inferiore destra
+            ctx.stroke();
+
+            ctx.moveTo(310, 250);
+            ctx.lineTo(340, 340); // Angolo destro basso
+            ctx.stroke();
+
+            ctx.moveTo(340, 340);
+            ctx.lineTo(250, 280); // Punta inferiore
+            ctx.stroke();
+
+            ctx.moveTo(250, 280);
+            ctx.lineTo(160, 340); // Angolo sinistro basso
+            ctx.stroke();
+
+            ctx.moveTo(160, 340);
+            ctx.lineTo(190, 250); // Punta inferiore sinistra
+            ctx.stroke();
+
+            ctx.moveTo(190, 250);
+            ctx.lineTo(120, 190); // Angolo sinistro alto
+            ctx.stroke();
+
+            ctx.moveTo(120, 190);
+            ctx.lineTo(210, 190); // Angolo sinistro basso
+            ctx.stroke();
+
+            ctx.moveTo(210, 190);
+            ctx.lineTo(250, 100); // Punta superiore
+            ctx.stroke();
+
+
+
+            
+
+        </script>
+    </body>
+</html>
