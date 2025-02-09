@@ -1,140 +1,90 @@
 <!DOCTYPE html>
 <html>
     <head>
-
-
-
         <style>
             body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-}
-
-.container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-}
-
-.input {
-    display: block;
-    width: 80%;
-    margin: 10px auto;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
-.output {
-    margin-top: 15px;
-    font-weight: bold;
-}
-.decripta {
-    position: absolute;
-    top: 95%;
-    left: 90%;
-}
-
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f4f4f4;
+            }
+            .container {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                width: 300px;
+            }
+            .input {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            .btn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                cursor: pointer;
+                border-radius: 5px;
+                width: 100%;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .output {
+                margin-top: 15px;
+                font-weight: bold;
+            }
+            .decripta {
+                position: absolute;
+                top: 95%;
+                left: 90%;
+            }
         </style>
     </head>
     <body>
-        
-
-    <div class="container">
-        <h2>Cifratura Messaggio</h2>
-        <input type="text" id="Messaggio" class="input" placeholder="Inserisci il messaggio">
-        <input type="text" id="Chiave" class="input" placeholder="Inserisci la chiave">
-        <button id="Cripta" class="btn" onclick="cripta()">Cripta</button>
-        <div id="Output" class="output"></div>
-    </div>
-
-    <a href="decriptazione.html" class="decripta">decripta con noi !!</a>
-
-
-
-
+        <div class="container">
+            <h2>Cifratura Messaggio</h2>
+            <input type="file" id="fileInput" class="input">
+            <input type="text" id="Chiave" class="input" placeholder="Inserisci la chiave">
+            <button class="btn" onclick="cripta()">Carica e Cripta</button>
+            <div id="Output" class="output"></div>
+        </div>
+        <a href="decriptazione.html" class="decripta">decripta con noi !!</a>
         <script>
-
-
-           
-
-
-            const scritta = document.createElement("p");
-            
-            const caratteri = [
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
-                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', 
-                '[', ']', '{', '}', ';', ':', '"', '\'', '<', '>', ',', '.', '?', '/', '|', '\\', '`', '~', ' '
-            ];
-
-
             function cripta() {
-                const messaggio = document.getElementById("Messaggio").value;
-                let chiaveSTR = document.getElementById("Chiave").value;
-                chiaveSTR = chiaveSTR.split(":");
-                const chiaveARR = [];
-                
-
-                for (let i = 0; i < chiaveSTR.length; i++) {
-                    chiaveARR[i] = parseInt(chiaveSTR[i])
-                }
-
-                let chiave = 0;
-                for (let i = 0; i < chiaveARR.length; i++) {
-                    chiave += chiaveARR[i];
-                }
-                let messaggio_criptato = "";
-
-
-                
-                for (let i = 0; i < messaggio.length; i++) {
-                   for (let j = 0; j < caratteri.length; j++) {
-                    if (caratteri[j] == messaggio[i]) {
-                        messaggio_criptato += caratteri[(j + (chiave % caratteri.length))%caratteri.length]
+                const file = document.getElementById("fileInput").files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const messaggio = event.target.result;
+                    let chiaveArr = document.getElementById("Chiave").value.split(":");
+                    let chiave = 0;
+                    for (let i = 0; i < chiaveArr.length; i++) {
+                        chiave += parseInt(chiaveArr[i]);
                     }
-                   }
-                }
-
-                
-               const nodo = document.createTextNode(messaggio_criptato);
-
-
-               const output = document.getElementById("Output");
-
-
-               scritta.appendChild(nodo);
-               output.appendChild(scritta);
-
-               localStorage.setItem("messaggio criptato", messaggio_criptato)
-
+                    const caratteri = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:"\'<>,.?/|\\`~ ';
+                    let messaggio_criptato = "";
+                    for (let i = 0; i < messaggio.length; i++) {
+                        let index = caratteri.indexOf(messaggio[i]);
+                        if (index !== -1) {
+                            messaggio_criptato += caratteri[(index + chiave) % caratteri.length];
+                        } else {
+                            messaggio_criptato += messaggio[i];
+                        }
+                    }
+                    document.getElementById("Output").textContent = messaggio_criptato;
+                    localStorage.setItem("messaggio criptato", messaggio_criptato);
+                };
+                reader.readAsText(file);
             }
-
-
         </script>
     </body>
 </html>
