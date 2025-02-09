@@ -1,252 +1,113 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>Lettura File con JavaScript</title>
-
-    <!-- INIZIO CSS -->
+    <title>Lettura File CSV con JavaScript</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #FF7F50, #FFB084); /* Gradiente corallo */
+            background: linear-gradient(135deg, #FF7F50, #FFB084);
             text-align: center;
             margin: 0;
             padding: 0;
             height: 100vh;
         }
-
         h1 {
             color: #fff;
             font-size: 2.5rem;
             padding: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
-
-        /* Div container centrato */
-        div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        /* Style per l'input */
-        input[type="file"] {
-            background-color: #FF7F50; /* Corallo */
-            border: 2px solid #fff;
-            color: #fff;
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="file"]:hover {
-            background-color: #FFB084; /* Corallo più chiaro al hover */
-        }
-
-        /* Stile per la tabella */
         table {
             width: 60%;
-            margin: 50px auto;
+            margin: 20px auto;
             border-collapse: collapse;
-            border-radius: 10px;
-            overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-
-        /* Stile per le righe della tabella */
-        tr:nth-child(even) {
-            background-color: #F8E3D8; /* Colore pastello chiaro per le righe pari */
-        }
-
-        tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
-            font-size: 1.1rem;
-            color: #333;
-            transition: background-color 0.3s ease;
         }
-
         th {
-            background-color: #FF7F50; /* Corallo */
+            background-color: #FF7F50;
             color: #fff;
-            font-weight: bold;
         }
-
-        td:hover {
-            background-color: #FFB084; /* Colore corallo al hover sulle celle */
-        }
-
-        /* Ombre e hover sui tasti */
-        .button {
-            background-color: #FF7F50; /* Corallo */
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #FFB084; /* Corallo più chiaro al hover */
-        }
-
-        /* Animazione per l'entrata delle righe della tabella */
-        tr {
-            opacity: 0;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-
-        tr:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-
-        tr:nth-child(2) {
-            animation-delay: 0.4s;
-        }
-
-        tr:nth-child(3) {
-            animation-delay: 0.6s;
-        }
-
-        /* Animazione di apparizione */
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Padding globale */
-        #output {
-            padding-top: 20px;
-        }
-
         canvas {
             background-color: white;
-            margin-bottom: 250px;
-            border-radius: 24px;
-            border-width: 2px;
-            border-color: darkgreen;
-            border: solid;
-
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 2px solid darkgreen;
         }
-
-
     </style>
 </head>
 <body>
-    <h1>Carica un file di testo</h1>
-    <input type="file" onchange="showfile()" id="input">
-
-    <table id="tabella" class="table"></table>
-
-    <div id="output"></div>
-
-    <canvas class="canvas" id="canvas" height="500" width="1000"></canvas>
-
+    <h1>Carica un file CSV</h1>
+    <input type="file" id="input" accept=".csv">
+    <table id="tabella"></table>
+    <canvas id="grafico" width="800" height="400"></canvas>
+    
     <script>
-        let anni = 1997;
-        let vecchia_y = 480;
-        let vecchio_init = 20;
-        let init = 20;
-        const tabella = document.getElementById("tabella");
-        let fileA = document.getElementById("input");
+        document.getElementById("input").addEventListener("change", function () {
+            let file = this.files[0];
+            let lettore = new FileReader();
 
-        function showfile() {
-            const table = document.getElementById("canvas")
-            const csx = table.getContext("2d")
+            lettore.onload = function (e) {
+                let righe = e.target.result.split('\n');
+                let tabella = document.getElementById("tabella");
+                let grafico = document.getElementById("grafico");
+                let ctx = grafico.getContext("2d");
+                tabella.innerHTML = "";
 
-            csx.setLineDash([5, 5]);
-            csx.moveTo(20, 470 - (50000/400));
-            csx.lineTo(980, 470 - (50000/400));
-            csx.stroke();
-
-            csx.setLineDash([5, 5]);
-            csx.moveTo(20, 470 - (100000/400));
-            csx.lineTo(980, 470 - (100000/400));
-            csx.stroke();
-
-            csx.setLineDash([5, 5]);
-            csx.moveTo(20, 470 - (150000/400));
-            csx.lineTo(980, 470 - (150000/400));
-            csx.stroke();
-
-
+                let dati = [];
+                righe.forEach((riga, indice) => {
+                    let elementoRiga = document.createElement("tr");
+                    let celle = riga.split(",").map(c => c.replace(/"/g, '').trim());
+                    
+                    if (indice > 0 && celle.length >= 2) {
+                        dati.push({ etichetta: celle[0], valore: parseFloat(celle[1]) });
+                    }
+                    
+                    celle.forEach(cella => {
+                        let elementoCella = document.createElement(indice === 0 ? "th" : "td");
+                        elementoCella.textContent = cella;
+                        elementoRiga.appendChild(elementoCella);
+                    });
+                    
+                    tabella.appendChild(elementoRiga);
+                });
+                
+                disegnaGrafico(ctx, dati);
+            };
             
+            lettore.readAsText(file);
+        });
+
+        function disegnaGrafico(ctx, dati) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(50, 350);
+            ctx.lineTo(750, 350);
+            ctx.stroke();
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, 350);
+            ctx.stroke();
             
-            csx.setLineDash([]);
-            csx.beginPath();
-            csx.moveTo(10, 480);
-            csx.lineTo(980, 480);
-            csx.stroke();
-
-            csx.moveTo(20, 490);
-            csx.lineTo(20, 20);
-            csx.stroke();
-
+            let valoreMassimo = Math.max(...dati.map(d => d.valore));
+            let scala = 300 / valoreMassimo;
+            let passoX = 700 / dati.length;
             
-
-
-
-
-
-
-            let file = fileA.files[0];
-            console.log(file.name);
-
-            let reader = new FileReader();
-
-            reader.readAsText(file);
-
-            reader.onload = function() {
-                const prova = reader.result;
-                const prova1 = prova.split(",");
-
-                for (let i = 0; i < ((prova1.length)/2)-1; i++) {
-                    const riga = document.createElement("tr");
-
-                    const contenutoData = document.createTextNode(prova1[i*2]);
-                    const contenutoNum = document.createTextNode(prova1[(i*2)+1]);
-
-                    const y = 470 - (parseInt(prova1[(i*2)+1]))/400;
-
-                    csx.moveTo(vecchio_init, vecchia_y);
-                    csx.lineTo(init, y);
-                    csx.stroke();
-
-
-
-
-                    csx.fillText(anni, init - 5, 493);
-                    anni = anni + 1;
-
-
-
-                    vecchia_y = y;
-                    vecchio_init = init;
-                    init = init + 30,33333333;
-
-
-                    const td1 = document.createElement("td");
-                    const td2 = document.createElement("td");
-
-                    td1.appendChild(contenutoData);
-                    td2.appendChild(contenutoNum);
-
-                    riga.appendChild(td1);
-                    riga.appendChild(td2);
-
-                    tabella.appendChild(riga);
+            ctx.beginPath();
+            ctx.strokeStyle = "blue";
+            dati.forEach((punto, indice) => {
+                let x = 50 + indice * passoX;
+                let y = 350 - (punto.valore * scala);
+                if (indice === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
                 }
-            }
+                ctx.fillText(punto.etichetta, x - 10, 370);
+            });
+            ctx.stroke();
         }
     </script>
 </body>
