@@ -64,13 +64,20 @@
                 if (!file) return;
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    const messaggio = event.target.result;
+                    let stream = event.target.result;
+                    console.log(stream)
+                    stream = stream.split(';;')
+                    console.log(stream)
+
+                    let messaggio = stream[0]
+                    
                     let chiaveArr = document.getElementById("Chiave").value.split(":");
                     let chiave = 0;
                     for (let i = 0; i < chiaveArr.length; i++) {
                         chiave += parseInt(chiaveArr[i]);
                     }
-                    const caratteri = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+[]{};:"\'<>,.?/|\\`~ ';
+                    const caratteri = stream[1];
+                    localStorage.setItem("alfabeto", stream[1]);
                     let messaggio_criptato = "";
                     for (let i = 0; i < messaggio.length; i++) {
                         let index = caratteri.indexOf(messaggio[i]);
