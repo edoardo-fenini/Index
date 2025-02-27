@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Maschera di input</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <form id="userForm">
+    Nome: <input type="text" id="nome" required><br>
+    Cognome: <input type="text" id="cognome" required><br>
+    Età: <input type="number" id="eta" required><br>
+    Indirizzo: <input type="text" id="indirizzo" required><br>
+    <button type="submit" onclick="invia()" >Invia</button>
+  </form>
+
+  <script>
+
+
+    function invia() {
+      var user = {
+        nome: document.getElementById('nome').value,
+        cognome: document.getElementById('cognome').value,
+        eta: document.getElementById('eta').value,
+        indirizzo: document.getElementById('indirizzo').value
+      };
+
+
+      
+      localStorage.setItem('user', JSON.stringify(user));
+    };
+  </script>
+</body>
+</html>
