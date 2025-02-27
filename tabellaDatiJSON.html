@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Griglia risultati</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    td {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <th>Nome</th>
+      <th>Cognome</th>
+      <th>Età</th>
+      <th>Indirizzo</th>
+    </tr>
+    <tbody id="datiUtenti"></tbody>
+  </table>
 
+  <script>
+    var utenti = localStorage.getItem('utenti');
+    if (utenti) {
+      utenti = JSON.parse(utenti);
+    } else {
+      utenti = [];
+    }
+
+    var corpoTabella = document.getElementById('datiUtenti');
+
+    for (var i = 0; i < utenti.length; i++) {
+      var utente = utenti[i];
+      var riga = document.createElement('tr');
+      riga.innerHTML = '<td>' + utente.nome + '</td><td>' + utente.cognome + '</td><td>' + utente.eta + '</td><td>' + utente.indirizzo + '</td>';
+      corpoTabella.appendChild(riga);
+    }
+  </script>
+</body>
+</html>
