@@ -55,16 +55,23 @@
 
 
     function invia() {
-      var user = {
+      var utente = {
         nome: document.getElementById('nome').value,
         cognome: document.getElementById('cognome').value,
         eta: document.getElementById('eta').value,
         indirizzo: document.getElementById('indirizzo').value
       };
 
+      var utenti = localStorage.getItem('utenti');
+      if (utenti) {
+        utenti = JSON.parse(utenti);
+      } else {
+        utenti = [];
+      }
 
-      
-      localStorage.setItem('user', JSON.stringify(user));
+      utenti.push(utente);
+      localStorage.setItem('utenti', JSON.stringify(utenti));
+      };
     };
   </script>
 </body>
